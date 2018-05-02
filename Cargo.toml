@@ -1,0 +1,12 @@
+[package]
+name = "hltb"
+version = "0.1.0"
+authors = ["gsnewmark <gildraug@gmail.com>"]
+categories = ["command-line-utilities"]
+license = "MIT"
+repository = "https://github.com/gsnewmark/hltb"
+description = "Simple CLI util to query HowLongToBeat"
+
+[dependencies]
+failure = "0.1.1"
+structopt = "0.2"
