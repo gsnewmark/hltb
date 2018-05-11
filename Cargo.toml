@@ -9,4 +9,5 @@ description = "Simple CLI util to query HowLongToBeat"
 
 [dependencies]
 failure = "0.1.1"
+reqwest = "0.8.5"
 structopt = "0.2"
