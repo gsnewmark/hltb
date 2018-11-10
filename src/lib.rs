@@ -79,7 +79,7 @@ fn parse_game(node: Node) -> Game {
 
     // There are three consecutive divs with same class for the main
     // story, main + extra, and completionist times.
-    let mut time_divs = node.find(Class("time_100"));
+    let mut time_divs = node.find(Class("center"));
     let main_story_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
     let main_extra_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
     let completionist_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
