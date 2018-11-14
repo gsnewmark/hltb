@@ -2,10 +2,9 @@
 extern crate failure;
 #[macro_use]
 extern crate structopt;
-
 extern crate reqwest;
-
 extern crate select;
+
 use select::document::Document;
 use select::node::Node;
 use select::predicate::{Class, Name};
@@ -29,12 +28,12 @@ const HLTB_URL_DOMAIN: &str = "https://howlongtobeat.com/";
 
 #[derive(Debug)]
 pub struct Game {
-    title: String,
-    hltb_url: String,
+    pub title: String,
+    pub hltb_url: String,
     // TODO actual time
-    main_story_time: String,
-    main_extra_time: String,
-    completionist_time: String,
+    pub main_story_time: String,
+    pub main_extra_time: String,
+    pub completionist_time: String,
 }
 
 pub fn run(opt: &Opt) -> Result<Vec<Game>, Error> {
@@ -54,8 +53,9 @@ fn fetch_games(client: &reqwest::Client, title: &String) -> Result<reqwest::Resp
         ("sorthead", "popular"),
         ("t", "games"),
     ];
+    let url = format!("{}/{}", HLTB_URL_DOMAIN, "search_main.php?page=1");
     client
-        .post("https://howlongtobeat.com/search_main.php?page=1")
+        .post(url.as_str())
         .form(&params)
         .send()
         .map_err(|e| Error::Request(e))
