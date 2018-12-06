@@ -1,15 +1,13 @@
 #[macro_use]
 extern crate prettytable;
-extern crate hltb;
-extern crate structopt;
 
-use hltb::{run, Error, Opt};
+use hltb as lib;
 use prettytable::Table;
 use structopt::StructOpt;
 
-fn main() -> Result<(), Error> {
-    let opt = Opt::from_args();
-    let res = run(&opt)?;
+fn main() -> Result<(), lib::Error> {
+    let opt = lib::Opt::from_args();
+    let res = lib::run(&opt)?;
 
     let mut table = Table::new();
     table.add_row(row![

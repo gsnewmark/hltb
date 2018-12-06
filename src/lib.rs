@@ -2,12 +2,12 @@
 extern crate failure;
 #[macro_use]
 extern crate structopt;
-extern crate reqwest;
-extern crate select;
 
-use select::document::Document;
-use select::node::Node;
-use select::predicate::{Class, Name};
+use select::{
+    document::Document,
+    node::Node,
+    predicate::{Class, Name},
+};
 
 #[derive(StructOpt, Debug)]
 #[structopt()]
