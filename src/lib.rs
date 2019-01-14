@@ -41,7 +41,7 @@ pub fn run(opt: &Opt) -> Result<Vec<Game>, Error> {
     fetch_games(&client, &opt.game).and_then(parse_games)
 }
 
-fn fetch_games(client: &reqwest::Client, title: &String) -> Result<reqwest::Response, Error> {
+fn fetch_games(client: &reqwest::Client, title: &str) -> Result<reqwest::Response, Error> {
     let params = [
         ("detail", ""),
         ("length_max", ""),
@@ -58,11 +58,11 @@ fn fetch_games(client: &reqwest::Client, title: &String) -> Result<reqwest::Resp
         .post(url.as_str())
         .form(&params)
         .send()
-        .map_err(|e| Error::Request(e))
+        .map_err(Error::Request)
 }
 
 fn parse_games(mut resp: reqwest::Response) -> Result<Vec<Game>, Error> {
-    let resp_text = resp.text().map_err(|e| Error::Request(e))?;
+    let resp_text = resp.text().map_err(Error::Request)?;
     let document = Document::from(resp_text.as_str());
     Ok(document.find(Name("li")).map(parse_game).collect())
 }
@@ -80,9 +80,18 @@ fn parse_game(node: Node) -> Game {
     // There are three consecutive divs with same class for the main
     // story, main + extra, and completionist times.
     let mut time_divs = node.find(Class("center"));
-    let main_story_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
-    let main_extra_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
-    let completionist_time = time_divs.next().map(|n| n.text()).unwrap_or("".to_string());
+    let main_story_time = time_divs
+        .next()
+        .map(|n| n.text())
+        .unwrap_or_else(|| "".to_string());
+    let main_extra_time = time_divs
+        .next()
+        .map(|n| n.text())
+        .unwrap_or_else(|| "".to_string());
+    let completionist_time = time_divs
+        .next()
+        .map(|n| n.text())
+        .unwrap_or_else(|| "".to_string());
 
     Game {
         title: String::from(title.to_owned().trim()),
