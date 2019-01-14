@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate human_panic;
+#[macro_use]
 extern crate prettytable;
 
 use hltb as lib;
@@ -6,6 +8,7 @@ use prettytable::Table;
 use structopt::StructOpt;
 
 fn main() -> Result<(), lib::Error> {
+    setup_panic!();
     let opt = lib::Opt::from_args();
     let res = lib::run(&opt)?;
 
