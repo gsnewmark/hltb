@@ -53,7 +53,7 @@ fn fetch_games(client: &reqwest::Client, title: &str) -> Result<reqwest::Respons
         ("sorthead", "popular"),
         ("t", "games"),
     ];
-    let url = format!("{}/{}", HLTB_URL_DOMAIN, "search_main.php?page=1");
+    let url = format!("{}/{}", HLTB_URL_DOMAIN, "search_results.php?page=1");
     client
         .post(url.as_str())
         .form(&params)
