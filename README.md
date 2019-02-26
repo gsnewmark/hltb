@@ -8,6 +8,6 @@ Simple CLI util to query [HowLongToBeat](https://howlongtobeat.com).
 
 ## License
 
-Copyright © 2018 Ivan Kryvoruchko
+Copyright © 2018-2019 Ivan Kryvoruchko
 
 Distributed under the MIT License, see [LICENSE](LICENSE) for the full license.
