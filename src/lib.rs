@@ -64,17 +64,21 @@ fn fetch_games(client: &reqwest::Client, title: &str) -> Result<reqwest::Respons
 fn parse_games(mut resp: reqwest::Response) -> Result<Vec<Game>, Error> {
     let resp_text = resp.text().map_err(Error::Request)?;
     let document = Document::from(resp_text.as_str());
-    Ok(document.find(Name("li")).map(parse_game).collect())
+    Ok(document
+        .find(Name("li"))
+        .map(parse_game)
+        .filter(Option::is_some)
+        .map(Option::unwrap)
+        .collect())
 }
 
-fn parse_game(node: Node) -> Game {
-    // TODO return Error instead of `unwrap`
+fn parse_game(node: Node) -> Option<Game> {
     let link_node = node.find(Name("a")).next();
-    let title = link_node.and_then(|n| n.attr("title")).unwrap();
+    let title = link_node.and_then(|n| n.attr("title"))?;
     let link = format!(
         "{}{}",
         HLTB_URL_DOMAIN,
-        link_node.and_then(|n| n.attr("href")).unwrap()
+        link_node.and_then(|n| n.attr("href"))?
     );
 
     // There are three consecutive divs with same class for the main
@@ -93,11 +97,11 @@ fn parse_game(node: Node) -> Game {
         .map(|n| n.text())
         .unwrap_or_else(|| "".to_string());
 
-    Game {
+    Some(Game {
         title: String::from(title.to_owned().trim()),
         hltb_url: String::from(link.to_owned().trim()),
         main_story_time: String::from(main_story_time.trim()),
         main_extra_time: String::from(main_extra_time.trim()),
         completionist_time: String::from(completionist_time.trim()),
-    }
+    })
 }

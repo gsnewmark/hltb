@@ -12,24 +12,28 @@ fn main() -> Result<(), lib::Error> {
     let opt = lib::Opt::from_args();
     let res = lib::run(&opt)?;
 
-    let mut table = Table::new();
-    table.add_row(row![
-        "Title",
-        "Main Time",
-        "Main + Extra Time",
-        "Completionist Time",
-        "URL"
-    ]);
-    for game in &res {
+    if res.is_empty() {
+        println!("Game(s) not found");
+    } else {
+        let mut table = Table::new();
         table.add_row(row![
-            game.title,
-            game.main_story_time,
-            game.main_extra_time,
-            game.completionist_time,
-            game.hltb_url
+            "Title",
+            "Main Time",
+            "Main + Extra Time",
+            "Completionist Time",
+            "URL"
         ]);
+        for game in &res {
+            table.add_row(row![
+                game.title,
+                game.main_story_time,
+                game.main_extra_time,
+                game.completionist_time,
+                game.hltb_url
+            ]);
+        }
+        table.printstd();
     }
-    table.printstd();
 
     Ok(())
 }
